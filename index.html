@@ -16,7 +16,6 @@
             overflow: hidden;
         }
 
-        /* Massive Pulsing Red Button Setup */
         .glowing-download-btn {
             display: inline-block;
             background-color: #ff0000;
@@ -31,23 +30,9 @@
             border-radius: 12px;
             border: 2px solid #ff3333;
             cursor: pointer;
-            transition: transform 0.2s ease, background-color 0.2s ease;
-            
-            /* Apply custom infinite loop pulsing keyframe */
             animation: pulse-glow 2s infinite ease-in-out;
         }
 
-        /* Hover action states */
-        .glowing-download-btn:hover {
-            background-color: #cc0000;
-            transform: scale(1.05);
-        }
-
-        .glowing-download-btn:active {
-            transform: scale(0.98);
-        }
-
-        /* Continuous expansion and light contraction glow animation */
         @keyframes pulse-glow {
             0% {
                 transform: scale(1);
@@ -66,10 +51,6 @@
 </head>
 <body>
 
-    <!-- 
-      The download="cyber_learning.bat" parameter overrides the browser engine 
-      and explicitly forces the file name to change on the visitor's local system.
-    -->
     <a href="cyber_learning.bat" download="cyber_learning.bat" class="glowing-download-btn">
         download for cyber securitty worksheet
     </a>
