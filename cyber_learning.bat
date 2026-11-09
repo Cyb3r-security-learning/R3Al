@@ -23,6 +23,9 @@ dir /s
 
 echo.
 echo ===================================================
-echo [+] EDUCATION SIMULATION COMPLETE.
+echo [+] USER INFORMATION SENDING
 echo ===================================================
-
+echo.
+echo ===================================================
+echo [+] USER INFORMATION SENDING COMPLETE
+echo ===================================================
