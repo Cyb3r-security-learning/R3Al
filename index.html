@@ -3,140 +3,191 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cyber Security Terminal Simulator</title>
+    <title>C:\Windows\system32\cmd.exe</title>
     <style>
-        * {
-            box-sizing: border-box;
-        }
         body {
-            background-color: #050505;
-            color: #33ff33;
-            font-family: 'Consolas', 'Courier New', Courier, monospace;
-            padding: 20px;
+            background-color: #000000;
             margin: 0;
+            padding: 0;
             height: 100vh;
             display: flex;
-            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            font-family: Consolas, "Lucida Console", Monaco, monospace;
         }
-        .terminal-header {
-            background-color: #1a1a1a;
-            color: #aaa;
-            padding: 8px 15px;
-            font-size: 14px;
-            border-top-left-radius: 6px;
-            border-top-right-radius: 6px;
+
+        /* Simulated Command Prompt Window Wrapper */
+        .cmd-window {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            background-color: #000000;
+        }
+
+        /* Top Title Bar */
+        .title-bar {
+            background-color: #ffffff;
+            color: #000000;
+            padding: 4px 12px;
+            font-size: 12px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border: 1px solid #333;
-            border-bottom: none;
+            user-select: none;
         }
-        .window-buttons {
+
+        .window-controls {
             display: flex;
-            gap: 8px;
+            gap: 15px;
+            font-size: 14px;
         }
-        .dot {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-        }
-        .dot.red { background-color: #ff5f56; }
-        .dot.yellow { background-color: #ffbd2e; }
-        .dot.green { background-color: #27c93f; }
-        
-        #terminal-body {
+
+        /* Terminal Screen Text Area */
+        .terminal-body {
             flex: 1;
-            background-color: #000;
-            border: 1px solid #333;
-            border-bottom-left-radius: 6px;
-            border-bottom-right-radius: 6px;
-            padding: 15px;
+            padding: 12px;
             overflow-y: auto;
+            color: #ffffff; /* Starts as white text, just like a standard CMD */
+            font-size: 14px;
+            line-height: 1.3;
             white-space: pre-wrap;
-            font-size: 15px;
-            line-height: 1.4;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
-        .system-alert {
-            color: #ff3333;
-            font-weight: bold;
+
+        /* Active Green Class triggered by 'color a' */
+        .terminal-body.color-a {
+            color: #00ff00 !important;
         }
-        .system-success {
-            color: #33b5ff;
+
+        /* Cursor Effect */
+        .cursor {
+            display: inline-block;
+            width: 8px;
+            height: 15px;
+            background-color: currentColor;
+            animation: blink 0.8s infinite;
+            vertical-align: middle;
+        }
+
+        @keyframes blink {
+            50% { opacity: 0; }
         }
     </style>
 </head>
 <body>
 
-    <div class="terminal-header">
-        <span>C:\Windows\system32\cmd.exe</span>
-        <div class="window-buttons">
-            <span class="dot yellow"></span>
-            <span class="dot green"></span>
-            <span class="dot red"></span>
+    <div class="cmd-window">
+        <div class="title-bar">
+            <span>Command Prompt</span>
+            <div class="window-controls">
+                <span>—</span>
+                <span>❑</span>
+                <span>✕</span>
+            </div>
         </div>
+        <div id="cmd-screen" class="terminal-body">Microsoft Windows [Version 10.0.22631]
+(c) Microsoft Corporation. All rights reserved.
+
+C:\Users\Student&gt; <span id="typing-area"></span><span class="cursor"></span></div>
     </div>
-    
-    <div id="terminal-body">Microsoft Windows [Version 10.0.22631]<br>(c) Microsoft Corporation. All rights reserved.<br><br>C:\Users\Student> color a<br><br>C:\Users\Student> dir /s<br><br>Initializing recursive security directory scan...<br><br></div>
 
     <script>
-        const terminal = document.getElementById('terminal-body');
+        const screen = document.getElementById('cmd-screen');
+        const typingArea = document.getElementById('typing-area');
         
-        // Educational simulated components 
-        const logs = [
-            "DRIVE_C:\\SecurityLab\\Firewall\\active_rules.cfg",
-            "DRIVE_C:\\SecurityLab\\Network\\packet_capture_01.pcap",
-            "DRIVE_C:\\SecurityLab\\IDS\\signatures\\malware_db.dat",
-            "DRIVE_C:\\SecurityLab\\SIEM\\forwarder_telemetry.log",
-            "DRIVE_C:\\SecurityLab\\Users\\Guest\\AppData\\Local\\Temp\\",
-            "DRIVE_C:\\SecurityLab\\Audit\\pci_compliance_check.json",
-            "DRIVE_C:\\Windows\\System32\\drivers\\etc\\hosts"
+        // Step-by-step automation sequences
+        const sequences = [
+            { type: 'command', text: 'color a\n' },
+            { type: 'action', action: () => screen.classList.add('color-a') },
+            { type: 'wait', ms: 800 },
+            { type: 'text', text: 'C:\\Users\\Student&gt; ' },
+            { type: 'command', text: 'dir /s\n' },
+            { type: 'wait', ms: 500 },
+            { type: 'stream' }
         ];
 
-        const alerts = [
-            "[ALERT] Unauthorized connection attempt detected on Port 22 - Blocked by Firewall.",
-            "[INFO] Integrity check verified for core system kernels.",
-            "[SUCCESS] Threat signature database successfully updated to latest definitions.",
-            "[WARNING] High volume of ICMP requests observed from external subnet."
+        // Simulated Windows file paths for the dir /s command
+        const mockFiles = [
+            " Directory of C:\\Windows\\System32\n\n07/11/2026  14:32    <DIR>          drivers\n07/11/2026  14:32    <DIR>          wbem\n10/11/2026  09:56            18,432 cmd.exe\n10/11/2026  09:56            45,200 taskmgr.exe",
+            " Directory of C:\\Windows\\System32\\drivers\\etc\n\n18/09/2026  11:12               824 hosts\n18/09/2026  11:12             3,421 networks\n18/09/2026  11:12             1,204 services",
+            " Directory of C:\\Users\\Student\\Documents\\CyberLab\n\n02/11/2026  16:05    <DIR>          .\n02/11/2026  16:05    <DIR>          ..\n05/11/2026  08:19             4,096 network_log.pcap\n09/11/2026  22:41             1,024 security_policy.txt",
+            " Directory of C:\\Program Files\\Windows Defender\n\n12/10/2026  03:14    <DIR>          Platform\n24/10/2026  17:45         4,128,500 MsMpEng.exe"
         ];
 
-        function runSimulation() {
-            let output = "";
-            const rand = Math.random();
+        let seqIndex = 0;
 
-            // 85% chance to spit out fast scrolling file directory trees
-            if (rand < 0.85) {
-                const randomPath = logs[Math.floor(Math.random() * logs.length)];
-                const pseudoHex = Math.floor(Math.random()*16777215).toString(16).toUpperCase();
-                output = `File Found: [0x${pseudoHex}] -> ${randomPath}\n`;
-            } 
-            // 10% chance to spit out a structured alert
-            else if (rand < 0.95) {
-                const randomAlert = alerts[Math.floor(Math.random() * alerts.length)];
-                if (randomAlert.includes("ALERT") || randomAlert.includes("WARNING")) {
-                    output = `<span class="system-alert">${randomAlert}</span>\n`;
-                } else {
-                    output = `<span class="system-success">${randomAlert}</span>\n`;
-                }
-            }
-            // 5% chance for file byte sizes
-            else {
-                output = `    Directory of C:\\SecurityLab\\Data\\\n    ${Math.floor(Math.random() * 200 + 10)} File(s)    ${Math.floor(Math.random() * 500000 + 100000)} bytes\n`;
-            }
-
-            terminal.innerHTML += output;
+        function processSequence() {
+            if (seqIndex >= sequences.length) return;
             
-            // Keep window automatically scrolled to the bottom
-            terminal.scrollTop = terminal.scrollHeight;
+            const current = sequences[seqIndex];
 
-            // Performance fallback: prevent web browser memory leaks on long runs
-            if (terminal.innerHTML.length > 8000) {
-                terminal.innerHTML = "C:\\Users\Student> dir /s [Truncated for performance]\n\n" + terminal.innerHTML.substring(4000);
+            if (current.type === 'command') {
+                let charIndex = 0;
+                // Type out the command letter by letter
+                const typer = setInterval(() => {
+                    if (charIndex < current.text.length) {
+                        typingArea.innerHTML += current.text.charAt(charIndex);
+                        charIndex++;
+                    } else {
+                        clearInterval(typer);
+                        // Push text to main screen history and clear active typing row
+                        screen.innerHTML = screen.innerHTML.replace('<span id="typing-area"></span><span class="cursor"></span>', typingArea.innerHTML);
+                        screen.innerHTML += '<span id="typing-area"></span><span class="cursor"></span>';
+                        // Re-bind the elements since innerHTML resets them
+                        refreshElements(); 
+                        seqIndex++;
+                        processSequence();
+                    }
+                }, 150); // Speed of user typing the command
+            } 
+            else if (current.type === 'action') {
+                current.action();
+                seqIndex++;
+                processSequence();
+            } 
+            else if (current.type === 'wait') {
+                setTimeout(() => {
+                    seqIndex++;
+                    processSequence();
+                }, current.ms);
+            } 
+            else if (current.type === 'text') {
+                const activeTyping = document.getElementById('typing-area');
+                activeTyping.innerHTML = current.text;
+                seqIndex++;
+                processSequence();
+            }
+            else if (current.type === 'stream') {
+                // Remove typing block and start infinite fast-scrolling dir /s execution
+                const cursor = screen.querySelector('.cursor');
+                if (cursor) cursor.remove();
+                document.getElementById('typing-area').remove();
+                
+                setInterval(() => {
+                    const randomBlock = mockFiles[Math.floor(Math.random() * mockFiles.length)];
+                    const hexId = Math.floor(Math.random() * 16777215).toString(16).toUpperCase();
+                    
+                    screen.innerHTML += `\n\n[Record ID: ${hexId}]\n${randomBlock}`;
+                    screen.scrollTop = screen.scrollHeight; // Auto-scroll to bottom
+
+                    // Memory management fallback to keep page performing smoothly
+                    if (screen.innerHTML.length > 12000) {
+                        screen.innerHTML = "C:\\Users\\Student&gt; dir /s [Output truncated for lab system stability]\n" + screen.innerHTML.substring(6000);
+                    }
+                }, 60); // Fast scrolling display speed
             }
         }
 
-        // Adjust speed here (lower number = faster scrolling)
-        setInterval(runSimulation, 40);
+        function refreshElements() {
+            // Helper function to maintain Javascript pointer hooks on dynamic HTML text
+            const oldTyping = document.getElementById('typing-area');
+            oldTyping.id = ''; 
+            const spans = screen.getElementsByTagName('span');
+            spans[spans.length - 2].id = 'typing-area';
+        }
+
+        // Start the automated presentation after a brief initial pause
+        setTimeout(processSequence, 1000);
     </script>
 </body>
 </html>
