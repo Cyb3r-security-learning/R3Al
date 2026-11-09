@@ -6,7 +6,7 @@ if not "%1"=="am_admin" (
 )
 
 :: Clear the screen and name the real window
-title Cyber Security Sandbox Local Lab
+title WIN32.exe
 cls
 
 :: Turn the text neon green instantly
