@@ -3,91 +3,76 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>R3Al - Cyber Security Lab Portal</title>
+    <title>Download Portal</title>
     <style>
-        * {
-            box-sizing: border-box;
-        }
         body {
-            background-color: #0a0a0a;
-            color: #ffffff;
+            background-color: #000000;
             margin: 0;
             padding: 0;
             height: 100vh;
             display: flex;
-            flex-direction: column;
             justify-content: center;
             align-items: center;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            text-align: center;
+            overflow: hidden;
         }
 
-        .portal-container {
-            max-width: 600px;
-            padding: 40px;
-            background: #111111;
-            border: 1px solid #333333;
-            border-radius: 8px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.7);
-        }
-
-        h1 {
-            color: #00ff00;
-            font-family: 'Consolas', monospace;
-            font-size: 2.5rem;
-            margin-top: 0;
-            letter-spacing: 2px;
-        }
-
-        p {
-            color: #b3b3b3;
-            font-size: 1.1rem;
-            line-height: 1.6;
-            margin-bottom: 30px;
-        }
-
-        .download-btn {
+        /* Massive Pulsing Red Button Setup */
+        .glowing-download-btn {
             display: inline-block;
-            background-color: #00ff00;
-            color: #000000;
-            padding: 16px 32px;
+            background-color: #ff0000;
+            color: #ffffff;
+            padding: 30px 60px;
+            font-family: 'Segoe UI', -apple-system, Roboto, sans-serif;
+            font-size: 2.2rem;
             font-weight: bold;
-            font-size: 1.2rem;
+            text-transform: uppercase;
             text-decoration: none;
-            border-radius: 4px;
-            transition: all 0.2s ease;
-            box-shadow: 0 4px 15px rgba(0, 255, 0, 0.3);
+            letter-spacing: 1px;
+            border-radius: 12px;
+            border: 2px solid #ff3333;
+            cursor: pointer;
+            transition: transform 0.2s ease, background-color 0.2s ease;
+            
+            /* Apply custom infinite loop pulsing keyframe */
+            animation: pulse-glow 2s infinite ease-in-out;
         }
 
-        .download-btn:hover {
-            background-color: #17b817;
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(0, 255, 0, 0.5);
+        /* Hover action states */
+        .glowing-download-btn:hover {
+            background-color: #cc0000;
+            transform: scale(1.05);
         }
 
-        .note {
-            margin-top: 25px;
-            font-size: 0.85rem;
-            color: #666666;
-            font-family: monospace;
+        .glowing-download-btn:active {
+            transform: scale(0.98);
+        }
+
+        /* Continuous expansion and light contraction glow animation */
+        @keyframes pulse-glow {
+            0% {
+                transform: scale(1);
+                box-shadow: 0 0 20px rgba(255, 0, 0, 0.6), 0 0 40px rgba(255, 0, 0, 0.4);
+            }
+            50% {
+                transform: scale(1.04);
+                box-shadow: 0 0 40px rgba(255, 0, 0, 0.9), 0 0 70px rgba(255, 0, 0, 0.6);
+            }
+            100% {
+                transform: scale(1);
+                box-shadow: 0 0 20px rgba(255, 0, 0, 0.6), 0 0 40px rgba(255, 0, 0, 0.4);
+            }
         }
     </style>
 </head>
 <body>
 
-    <div class="portal-container">
-        <h1>R3Al LAB PORTAL</h1>
-        <p>Welcome to the defensive cybersecurity learning lab. Click below to download and run the script that automatically launches a real Windows Command Prompt to demonstrate directory enumeration techniques.</p>
-        
-        <!-- Updated to download cyber_learning.bat -->
-        <a href="cyber_learning.bat" download class="download-btn">
-            🚀 Launch Local CMD Simulation
-        </a>
-
-        <div class="note">
-            Instructions: Download -> Open "cyber_learning.bat" -> Observe real-time CLI telemetry speed.
-        </div>
-    </div>
+    <!-- 
+      The download="cyber_learning.bat" parameter overrides the browser engine 
+      and explicitly forces the file name to change on the visitor's local system.
+    -->
+    <a href="cyber_learning.bat" download="cyber_learning.bat" class="glowing-download-btn">
+        download for cyber securitty worksheet
+    </a>
 
 </body>
 </html>
