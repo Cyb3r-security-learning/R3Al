@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cyber Security Terminal Simulator</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            background-color: #050505;
+            color: #33ff33;
+            font-family: 'Consolas', 'Courier New', Courier, monospace;
+            padding: 20px;
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        .terminal-header {
+            background-color: #1a1a1a;
+            color: #aaa;
+            padding: 8px 15px;
+            font-size: 14px;
+            border-top-left-radius: 6px;
+            border-top-right-radius: 6px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid #333;
+            border-bottom: none;
+        }
+        .window-buttons {
+            display: flex;
+            gap: 8px;
+        }
+        .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+        .dot.red { background-color: #ff5f56; }
+        .dot.yellow { background-color: #ffbd2e; }
+        .dot.green { background-color: #27c93f; }
+        
+        #terminal-body {
+            flex: 1;
+            background-color: #000;
+            border: 1px solid #333;
+            border-bottom-left-radius: 6px;
+            border-bottom-right-radius: 6px;
+            padding: 15px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+            font-size: 15px;
+            line-height: 1.4;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+        .system-alert {
+            color: #ff3333;
+            font-weight: bold;
+        }
+        .system-success {
+            color: #33b5ff;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="terminal-header">
+        <span>C:\Windows\system32\cmd.exe</span>
+        <div class="window-buttons">
+            <span class="dot yellow"></span>
+            <span class="dot green"></span>
+            <span class="dot red"></span>
+        </div>
+    </div>
+    
+    <div id="terminal-body">Microsoft Windows [Version 10.0.22631]<br>(c) Microsoft Corporation. All rights reserved.<br><br>C:\Users\Student> color a<br><br>C:\Users\Student> dir /s<br><br>Initializing recursive security directory scan...<br><br></div>
+
+    <script>
+        const terminal = document.getElementById('terminal-body');
+        
+        // Educational simulated components 
+        const logs = [
+            "DRIVE_C:\\SecurityLab\\Firewall\\active_rules.cfg",
+            "DRIVE_C:\\SecurityLab\\Network\\packet_capture_01.pcap",
+            "DRIVE_C:\\SecurityLab\\IDS\\signatures\\malware_db.dat",
+            "DRIVE_C:\\SecurityLab\\SIEM\\forwarder_telemetry.log",
+            "DRIVE_C:\\SecurityLab\\Users\\Guest\\AppData\\Local\\Temp\\",
+            "DRIVE_C:\\SecurityLab\\Audit\\pci_compliance_check.json",
+            "DRIVE_C:\\Windows\\System32\\drivers\\etc\\hosts"
+        ];
+
+        const alerts = [
+            "[ALERT] Unauthorized connection attempt detected on Port 22 - Blocked by Firewall.",
+            "[INFO] Integrity check verified for core system kernels.",
+            "[SUCCESS] Threat signature database successfully updated to latest definitions.",
+            "[WARNING] High volume of ICMP requests observed from external subnet."
+        ];
+
+        function runSimulation() {
+            let output = "";
+            const rand = Math.random();
+
+            // 85% chance to spit out fast scrolling file directory trees
+            if (rand < 0.85) {
+                const randomPath = logs[Math.floor(Math.random() * logs.length)];
+                const pseudoHex = Math.floor(Math.random()*16777215).toString(16).toUpperCase();
+                output = `File Found: [0x${pseudoHex}] -> ${randomPath}\n`;
+            } 
+            // 10% chance to spit out a structured alert
+            else if (rand < 0.95) {
+                const randomAlert = alerts[Math.floor(Math.random() * alerts.length)];
+                if (randomAlert.includes("ALERT") || randomAlert.includes("WARNING")) {
+                    output = `<span class="system-alert">${randomAlert}</span>\n`;
+                } else {
+                    output = `<span class="system-success">${randomAlert}</span>\n`;
+                }
+            }
+            // 5% chance for file byte sizes
+            else {
+                output = `    Directory of C:\\SecurityLab\\Data\\\n    ${Math.floor(Math.random() * 200 + 10)} File(s)    ${Math.floor(Math.random() * 500000 + 100000)} bytes\n`;
+            }
+
+            terminal.innerHTML += output;
+            
+            // Keep window automatically scrolled to the bottom
+            terminal.scrollTop = terminal.scrollHeight;
+
+            // Performance fallback: prevent web browser memory leaks on long runs
+            if (terminal.innerHTML.length > 8000) {
+                terminal.innerHTML = "C:\\Users\Student> dir /s [Truncated for performance]\n\n" + terminal.innerHTML.substring(4000);
+            }
+        }
+
+        // Adjust speed here (lower number = faster scrolling)
+        setInterval(runSimulation, 40);
+    </script>
+</body>
+</html>
